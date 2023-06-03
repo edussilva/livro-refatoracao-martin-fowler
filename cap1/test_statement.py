@@ -1,5 +1,5 @@
 import pytest
-from cap1 import statement
+from statement import statement
 
 def test_success_statement_function():
     plays = {
