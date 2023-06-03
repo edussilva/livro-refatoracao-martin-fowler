@@ -1,5 +1,39 @@
 import pytest
-from statement import statement
+from statement import statement, amount_for
+
+
+def test_ok_amount_for_play_tragedy():
+    performance = {
+        "playID": "hamlet",
+        "audience": 55
+    }
+    play = {"name": "Hamlet", "type": "tragedy"}
+
+    result = 65000
+    assert amount_for(performance, play) == result
+
+
+def test_ok_amount_for_play_comedy():
+    performance = {
+        "playID": "as-like",
+        "audience": 35
+    }
+    play = {"name": "As You Like It", "type": "comedy"}
+
+    result = 58000
+    assert amount_for(performance, play) == result
+
+
+def test_error_amount_for_play_other():
+    performance = {
+        "playID": "any",
+        "audience": 35
+    }
+    play = {"name": "Any", "type": "other"}
+
+    with pytest.raises(Exception):
+        amount_for(performance, play)
+
 
 def test_success_statement_function():
     plays = {
