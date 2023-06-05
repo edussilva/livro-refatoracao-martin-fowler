@@ -1,14 +1,12 @@
 import math
 
 
-
-
 def statement(invoice, plays):
     total_amount = 0
     volume_credits = 0
     result = f'Statement for {invoice["customer"]}\n'
 
-    def format_usd(number):
+    def usd(number):
         return f'{number / 100:0,.2f}'
 
     def amount_for(performance):
@@ -47,9 +45,9 @@ def statement(invoice, plays):
         volume_credits += volume_credits_for(perf)
 
         #  Exibe a linha para esta requisição
-        result += f' {play_for(perf)["name"]}: {format_usd(amount_for(perf))} ({perf["audience"]} seats)\n'
+        result += f' {play_for(perf)["name"]}: {usd(amount_for(perf))} ({perf["audience"]} seats)\n'
         total_amount += amount_for(perf)
 
-    result += f'Amount owed is {format_usd(total_amount)}\n'
+    result += f'Amount owed is {usd(total_amount)}\n'
     result += f'You earned {volume_credits} credits\n'
     return result
