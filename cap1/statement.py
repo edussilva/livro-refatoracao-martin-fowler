@@ -41,11 +41,11 @@ def statement(invoice, plays):
         return result
 
     def total_volume_credits():
-        volume_credits = 0
+        result = 0
         for perf in invoice['performances']:
-            volume_credits += volume_credits_for(perf)
+            result += volume_credits_for(perf)
         
-        return volume_credits
+        return result
     
     def total_amount():
         result = 0
