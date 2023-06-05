@@ -8,6 +8,9 @@ def statement(invoice, plays):
     volume_credits = 0
     result = f'Statement for {invoice["customer"]}\n'
 
+    def format_usd(number):
+        return f'{number / 100:0,.2f}'
+
     def amount_for(performance):
         result = 0
 
@@ -30,19 +33,23 @@ def statement(invoice, plays):
 
     def play_for(performance):
         return plays[performance['playID']]
+
+    def volume_credits_for(performance):
+        result = 0
+        result += max([performance['audience'] - 30, 0])
+
+        if 'comedy' == play_for(performance)['type']:
+            result += math.floor(performance['audience'] / 5)
+
+        return result
     
     for perf in invoice['performances']:
-        # Soma créditos por volume
-        volume_credits += max([perf['audience'] - 30, 0])
-
-        # Soma um crédito extra para cada dez espectadores de comédia
-        if 'comedy' == play_for(perf)['type']:
-            volume_credits += math.floor(perf['audience'] / 5)
+        volume_credits += volume_credits_for(perf)
 
         #  Exibe a linha para esta requisição
-        result += f' {play_for(perf)["name"]}: {amount_for(perf) / 100:0,.2f} ({perf["audience"]} seats)\n'
+        result += f' {play_for(perf)["name"]}: {format_usd(amount_for(perf))} ({perf["audience"]} seats)\n'
         total_amount += amount_for(perf)
 
-    result += f'Amount owed is {total_amount / 100:0,.2f}\n'
+    result += f'Amount owed is {format_usd(total_amount)}\n'
     result += f'You earned {volume_credits} credits\n'
     return result
