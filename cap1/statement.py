@@ -11,7 +11,7 @@ def statement(invoice, plays):
     def amount_for(performance, play):
         result = 0
 
-        if play['type'] == 'tragedy':
+        if play_for(performance)['type'] == 'tragedy':
             result = 40000
 
             if performance['audience'] > 30:
@@ -24,7 +24,7 @@ def statement(invoice, plays):
             
             result += 300 * performance['audience']
         else:
-            raise Exception(f'unknown type {play["type"]}')
+            raise Exception(f'unknown type {play_for(performance)["type"]}')
 
         return result
 
