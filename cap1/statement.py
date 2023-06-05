@@ -1,32 +1,32 @@
 import math
 
 
-def amount_for(performance, play):
-    result = 0
-
-    if play['type'] == 'tragedy':
-        result = 40000
-
-        if performance['audience'] > 30:
-            result += 1000 * (performance['audience'] - 30)
-    elif play['type'] == 'comedy':
-        result = 30000
-
-        if performance['audience'] > 20:
-            result += 10000 + 500 * (performance['audience'] - 20)
-        
-        result += 300 * performance['audience']
-    else:
-        raise Exception(f'unknown type {play["type"]}')
-
-    return result
-
 
 
 def statement(invoice, plays):
     total_amount = 0
     volume_credits = 0
     result = f'Statement for {invoice["customer"]}\n'
+
+    def amount_for(performance, play):
+        result = 0
+
+        if play['type'] == 'tragedy':
+            result = 40000
+
+            if performance['audience'] > 30:
+                result += 1000 * (performance['audience'] - 30)
+        elif play['type'] == 'comedy':
+            result = 30000
+
+            if performance['audience'] > 20:
+                result += 10000 + 500 * (performance['audience'] - 20)
+            
+            result += 300 * performance['audience']
+        else:
+            raise Exception(f'unknown type {play["type"]}')
+
+        return result
 
     def play_for(performance):
         return plays[performance['playID']]
