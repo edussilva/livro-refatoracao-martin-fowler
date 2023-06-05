@@ -22,13 +22,17 @@ def amount_for(performance, play):
     return result
 
 
+
 def statement(invoice, plays):
     total_amount = 0
     volume_credits = 0
     result = f'Statement for {invoice["customer"]}\n'
 
-    for perf in invoice['performances']:
-        play = plays[perf['playID']]
+    def play_for(performance):
+        return plays[performance['playID']]
+    
+    for perf in invoice['performances']:        
+        play = play_for(perf)
     
         this_amount = amount_for(perf, play)
 
