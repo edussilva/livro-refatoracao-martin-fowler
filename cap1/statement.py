@@ -31,20 +31,18 @@ def statement(invoice, plays):
     def play_for(performance):
         return plays[performance['playID']]
     
-    for perf in invoice['performances']:        
-        play = play_for(perf)
-    
-        this_amount = amount_for(perf, play)
+    for perf in invoice['performances']:    
+        this_amount = amount_for(perf, play_for(perf))
 
         # Soma créditos por volume
         volume_credits += max([perf['audience'] - 30, 0])
 
         # Soma um crédito extra para cada dez espectadores de comédia
-        if 'comedy' == play['type']:
+        if 'comedy' == play_for(perf)['type']:
             volume_credits += math.floor(perf['audience'] / 5)
 
         #  Exibe a linha para esta requisição
-        result += f' {play["name"]}: {this_amount / 100:0,.2f} ({perf["audience"]} seats)\n'
+        result += f' {play_for(perf)["name"]}: {this_amount / 100:0,.2f} ({perf["audience"]} seats)\n'
         total_amount += this_amount
 
     result += f'Amount owed is {total_amount / 100:0,.2f}\n'
