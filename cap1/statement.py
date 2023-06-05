@@ -47,8 +47,15 @@ def statement(invoice, plays):
         
         return volume_credits
     
-    for perf in invoice['performances']:
-        total_amount += amount_for(perf)
+    def apple_sauce():
+        total_amount = 0
+
+        for perf in invoice['performances']:
+            total_amount += amount_for(perf)
+
+        return total_amount
+
+    total_amount = apple_sauce()
 
     for perf in invoice['performances']:
         #  Exibe a linha para esta requisição
