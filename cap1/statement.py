@@ -55,12 +55,10 @@ def statement(invoice, plays):
 
         return total_amount
 
-    total_amount = apple_sauce()
-
     for perf in invoice['performances']:
         #  Exibe a linha para esta requisição
         result += f' {play_for(perf)["name"]}: {usd(amount_for(perf))} ({perf["audience"]} seats)\n'
 
-    result += f'Amount owed is {usd(total_amount)}\n'
+    result += f'Amount owed is {usd(apple_sauce())}\n'
     result += f'You earned {total_volume_credits()} credits\n'
     return result
