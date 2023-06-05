@@ -42,11 +42,13 @@ def statement(invoice, plays):
         return result
     
     for perf in invoice['performances']:
-        volume_credits += volume_credits_for(perf)
-
         #  Exibe a linha para esta requisição
         result += f' {play_for(perf)["name"]}: {usd(amount_for(perf))} ({perf["audience"]} seats)\n'
         total_amount += amount_for(perf)
+
+    for perf in invoice['performances']:
+        volume_credits += volume_credits_for(perf)
+
 
     result += f'Amount owed is {usd(total_amount)}\n'
     result += f'You earned {volume_credits} credits\n'
