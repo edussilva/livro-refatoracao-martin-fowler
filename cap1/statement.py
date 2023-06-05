@@ -8,7 +8,7 @@ def statement(invoice, plays):
     volume_credits = 0
     result = f'Statement for {invoice["customer"]}\n'
 
-    def amount_for(performance, play):
+    def amount_for(performance):
         result = 0
 
         if play_for(performance)['type'] == 'tragedy':
@@ -16,7 +16,7 @@ def statement(invoice, plays):
 
             if performance['audience'] > 30:
                 result += 1000 * (performance['audience'] - 30)
-        elif play['type'] == 'comedy':
+        elif play_for(performance)['type'] == 'comedy':
             result = 30000
 
             if performance['audience'] > 20:
@@ -32,7 +32,7 @@ def statement(invoice, plays):
         return plays[performance['playID']]
     
     for perf in invoice['performances']:    
-        this_amount = amount_for(perf, play_for(perf))
+        this_amount = amount_for(perf)
 
         # Soma créditos por volume
         volume_credits += max([perf['audience'] - 30, 0])
