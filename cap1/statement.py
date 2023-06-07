@@ -41,6 +41,12 @@ def statement(invoice, plays):
         
         return result
     
+    def total_amount(statement_data):
+        result = 0
+        for perf in statement_data['performances']:
+            result += perf['amount']
+        return result
+
     def enrich_performance(performance):
         result = performance.copy()
         result['play'] = play_for(result)
@@ -52,6 +58,7 @@ def statement(invoice, plays):
     statement_data['customer'] = invoice['customer']
     statement_data['performances'] = list(map(enrich_performance, invoice['performances']))
     statement_data['total_volume_credits'] = total_volume_credits(statement_data)
+    statement_data['total_amount'] = total_amount(statement_data)
     return render_plained_text(statement_data, invoice, plays)
 
 
@@ -59,19 +66,13 @@ def render_plained_text(data, invoice, plays):
     def usd(number):
         return f'{number / 100:0,.2f}'
     
-    def total_amount():
-        result = 0
 
-        for perf in data['performances']:
-            result += perf['amount']
-
-        return result
 
     result = f'Statement for {data["customer"]}\n'
     for perf in data['performances']:
         #  Exibe a linha para esta requisição
         result += f' {perf["play"]["name"]}: {usd(perf["amount"])} ({perf["audience"]} seats)\n'
 
-    result += f'Amount owed is {usd(total_amount())}\n'
+    result += f'Amount owed is {usd(data["total_amount"])}\n'
     result += f'You earned {data["total_volume_credits"]} credits\n'
     return result
