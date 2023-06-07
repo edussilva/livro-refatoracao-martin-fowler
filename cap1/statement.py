@@ -2,8 +2,12 @@ import math
 
 
 def statement(invoice, plays):
+    def play_for(performance):
+        return plays[performance['playID']]
+    
     def enrich_performance(performance):
         result = performance.copy()
+        result['play'] = play_for(performance)
         return result
 
     statement_data = {}
@@ -19,12 +23,12 @@ def render_plained_text(data, invoice, plays):
     def amount_for(performance):
         result = 0
 
-        if play_for(performance)['type'] == 'tragedy':
+        if performance['play']['type'] == 'tragedy':
             result = 40000
 
             if performance['audience'] > 30:
                 result += 1000 * (performance['audience'] - 30)
-        elif play_for(performance)['type'] == 'comedy':
+        elif performance['play']['type'] == 'comedy':
             result = 30000
 
             if performance['audience'] > 20:
@@ -36,14 +40,12 @@ def render_plained_text(data, invoice, plays):
 
         return result
 
-    def play_for(performance):
-        return plays[performance['playID']]
 
     def volume_credits_for(performance):
         result = 0
         result += max([performance['audience'] - 30, 0])
 
-        if 'comedy' == play_for(performance)['type']:
+        if 'comedy' == performance['play']['type']:
             result += math.floor(performance['audience'] / 5)
 
         return result
@@ -66,7 +68,7 @@ def render_plained_text(data, invoice, plays):
     result = f'Statement for {data["customer"]}\n'
     for perf in data['performances']:
         #  Exibe a linha para esta requisição
-        result += f' {play_for(perf)["name"]}: {usd(amount_for(perf))} ({perf["audience"]} seats)\n'
+        result += f' {perf["play"]["name"]}: {usd(amount_for(perf))} ({perf["audience"]} seats)\n'
 
     result += f'Amount owed is {usd(total_amount())}\n'
     result += f'You earned {total_volume_credits()} credits\n'
