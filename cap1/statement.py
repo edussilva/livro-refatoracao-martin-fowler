@@ -35,11 +35,7 @@ def statement(invoice, plays):
         return result
 
     def total_volume_credits(statement_data):
-        result = 0
-        for perf in statement_data['performances']:
-            result += perf['volume_credits']
-        
-        return result
+        return sum([item['volume_credits'] for item in statement_data['performances']])
     
     def total_amount(statement_data):
         result = 0
