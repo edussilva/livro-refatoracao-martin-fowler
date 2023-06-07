@@ -5,21 +5,6 @@ def statement(invoice, plays):
     def play_for(performance):
         return plays[performance['playID']]
     
-    def enrich_performance(performance):
-        result = performance.copy()
-        result['play'] = play_for(performance)
-        return result
-
-    statement_data = {}
-    statement_data['customer'] = invoice['customer']
-    statement_data['performances'] = list(map(enrich_performance, invoice['performances']))
-    return render_plained_text(statement_data, invoice, plays)
-
-
-def render_plained_text(data, invoice, plays):
-    def usd(number):
-        return f'{number / 100:0,.2f}'
-
     def amount_for(performance):
         result = 0
 
@@ -40,6 +25,21 @@ def render_plained_text(data, invoice, plays):
 
         return result
 
+    def enrich_performance(performance):
+        result = performance.copy()
+        result['play'] = play_for(result)
+        result['amount'] = amount_for(result)
+        return result
+
+    statement_data = {}
+    statement_data['customer'] = invoice['customer']
+    statement_data['performances'] = list(map(enrich_performance, invoice['performances']))
+    return render_plained_text(statement_data, invoice, plays)
+
+
+def render_plained_text(data, invoice, plays):
+    def usd(number):
+        return f'{number / 100:0,.2f}'
 
     def volume_credits_for(performance):
         result = 0
@@ -61,14 +61,14 @@ def render_plained_text(data, invoice, plays):
         result = 0
 
         for perf in data['performances']:
-            result += amount_for(perf)
+            result += perf['amount']
 
         return result
 
     result = f'Statement for {data["customer"]}\n'
     for perf in data['performances']:
         #  Exibe a linha para esta requisição
-        result += f' {perf["play"]["name"]}: {usd(amount_for(perf))} ({perf["audience"]} seats)\n'
+        result += f' {perf["play"]["name"]}: {usd(perf["amount"])} ({perf["audience"]} seats)\n'
 
     result += f'Amount owed is {usd(total_amount())}\n'
     result += f'You earned {total_volume_credits()} credits\n'
