@@ -25,10 +25,20 @@ def statement(invoice, plays):
 
         return result
 
+    def volume_credits_for(performance):
+        result = 0
+        result += max([performance['audience'] - 30, 0])
+
+        if 'comedy' == performance['play']['type']:
+            result += math.floor(performance['audience'] / 5)
+
+        return result
+    
     def enrich_performance(performance):
         result = performance.copy()
         result['play'] = play_for(result)
         result['amount'] = amount_for(result)
+        result['volume_credits'] = volume_credits_for(result)
         return result
 
     statement_data = {}
@@ -41,19 +51,12 @@ def render_plained_text(data, invoice, plays):
     def usd(number):
         return f'{number / 100:0,.2f}'
 
-    def volume_credits_for(performance):
-        result = 0
-        result += max([performance['audience'] - 30, 0])
 
-        if 'comedy' == performance['play']['type']:
-            result += math.floor(performance['audience'] / 5)
-
-        return result
 
     def total_volume_credits():
         result = 0
         for perf in data['performances']:
-            result += volume_credits_for(perf)
+            result += perf['volume_credits']
         
         return result
     
