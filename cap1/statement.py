@@ -2,10 +2,15 @@ import math
 
 
 def statement(invoice, plays):
+    def enrich_performance(performance):
+        result = performance.copy()
+        return result
+
     statement_data = {}
     statement_data['customer'] = invoice['customer']
-    statement_data['performances'] = invoice['performances']
+    statement_data['performances'] = list(map(enrich_performance, invoice['performances']))
     return render_plained_text(statement_data, invoice, plays)
+
 
 def render_plained_text(data, invoice, plays):
     def usd(number):
