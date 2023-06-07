@@ -66,8 +66,6 @@ def render_plained_text(data, invoice, plays):
     def usd(number):
         return f'{number / 100:0,.2f}'
     
-
-
     result = f'Statement for {data["customer"]}\n'
     for perf in data['performances']:
         #  Exibe a linha para esta requisição
