@@ -38,10 +38,7 @@ def statement(invoice, plays):
         return sum([item['volume_credits'] for item in statement_data['performances']])
     
     def total_amount(statement_data):
-        result = 0
-        for perf in statement_data['performances']:
-            result += perf['amount']
-        return result
+        return sum([item['amount'] for item in statement_data['performances']])
 
     def enrich_performance(performance):
         result = performance.copy()
