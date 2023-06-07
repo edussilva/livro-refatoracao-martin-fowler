@@ -4,6 +4,7 @@ import math
 def statement(invoice, plays):
     statement_data = {}
     statement_data['customer'] = invoice['customer']
+    statement_data['performances'] = invoice['performances']
     return render_plained_text(statement_data, invoice, plays)
 
 def render_plained_text(data, invoice, plays):
@@ -44,7 +45,7 @@ def render_plained_text(data, invoice, plays):
 
     def total_volume_credits():
         result = 0
-        for perf in invoice['performances']:
+        for perf in data['performances']:
             result += volume_credits_for(perf)
         
         return result
@@ -52,13 +53,13 @@ def render_plained_text(data, invoice, plays):
     def total_amount():
         result = 0
 
-        for perf in invoice['performances']:
+        for perf in data['performances']:
             result += amount_for(perf)
 
         return result
 
     result = f'Statement for {data["customer"]}\n'
-    for perf in invoice['performances']:
+    for perf in data['performances']:
         #  Exibe a linha para esta requisição
         result += f' {play_for(perf)["name"]}: {usd(amount_for(perf))} ({perf["audience"]} seats)\n'
 
