@@ -2,9 +2,9 @@ import math
 
 
 def statement(invoice, plays):
-    total_amount = 0
-    result = f'Statement for {invoice["customer"]}\n'
+    return render_plained_text(invoice, plays)
 
+def render_plained_text(invoice, plays):
     def usd(number):
         return f'{number / 100:0,.2f}'
 
@@ -55,6 +55,7 @@ def statement(invoice, plays):
 
         return result
 
+    result = f'Statement for {invoice["customer"]}\n'
     for perf in invoice['performances']:
         #  Exibe a linha para esta requisição
         result += f' {play_for(perf)["name"]}: {usd(amount_for(perf))} ({perf["audience"]} seats)\n'
