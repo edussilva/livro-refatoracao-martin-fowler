@@ -6,30 +6,34 @@ class PerformanceCalculator:
         self.performance = performance
         self.play = play
 
+    @property
+    def amount(self):
+        result = 0
+
+        if self.play['type'] == 'tragedy':
+            result = 40000
+
+            if self.performance['audience'] > 30:
+                result += 1000 * (self.performance['audience'] - 30)
+        elif self.performance['play']['type'] == 'comedy':
+            result = 30000
+
+            if self.performance['audience'] > 20:
+                result += 10000 + 500 * (self.performance['audience'] - 20)
+            
+            result += 300 * self.performance['audience']
+        else:
+            raise Exception(f'unknown type {self.play["type"]}')
+
+        return result
+        
 
 def create_statement_data(invoice, plays):
     def play_for(performance):
         return plays[performance['playID']]
     
     def amount_for(performance):
-        result = 0
-
-        if performance['play']['type'] == 'tragedy':
-            result = 40000
-
-            if performance['audience'] > 30:
-                result += 1000 * (performance['audience'] - 30)
-        elif performance['play']['type'] == 'comedy':
-            result = 30000
-
-            if performance['audience'] > 20:
-                result += 10000 + 500 * (performance['audience'] - 20)
-            
-            result += 300 * performance['audience']
-        else:
-            raise Exception(f'unknown type {play_for(performance)["type"]}')
-
-        return result
+        return PerformanceCalculator(performance, play_for(performance)).amount
 
     def volume_credits_for(performance):
         result = 0
