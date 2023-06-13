@@ -1,5 +1,5 @@
 import json
-from statement import statement
+from statement import statement, html_statement
 
 if __name__ == '__main__':
     with open('cap1/plays.json', 'r') as plays_file:
@@ -13,3 +13,7 @@ if __name__ == '__main__':
     for invoice in invoices:
         txt = statement(invoice, plays)
         print(txt)
+
+    for invoice in invoices:
+        html = html_statement(invoice, plays)
+        print(html)
