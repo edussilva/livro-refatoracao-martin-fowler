@@ -52,10 +52,10 @@ def statement(invoice, plays):
     statement_data['performances'] = list(map(enrich_performance, invoice['performances']))
     statement_data['total_volume_credits'] = total_volume_credits(statement_data)
     statement_data['total_amount'] = total_amount(statement_data)
-    return render_plained_text(statement_data, invoice, plays)
+    return render_plained_text(statement_data)
 
 
-def render_plained_text(data, invoice, plays):
+def render_plained_text(data):
     def usd(number):
         return f'{number / 100:0,.2f}'
     
