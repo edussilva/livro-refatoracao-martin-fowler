@@ -38,7 +38,22 @@ class PerformanceCalculator:
         return result
 
 
+class TragedyCalculator(PerformanceCalculator):
+    pass
+
+
+class ComedyCalculator(PerformanceCalculator):
+    pass
+
+
 def create_performance_calculator(performance, play):
+    if play['type'] == 'tragedy':
+        return TragedyCalculator(performance, play)
+    elif play['type'] == 'comedy':
+        return ComedyCalculator(performance, play)
+    
+    raise Exception(f'unknown type {play["type"]}')
+    
     return PerformanceCalculator(performance, play)
 
     
