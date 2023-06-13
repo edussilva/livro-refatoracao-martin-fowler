@@ -15,7 +15,7 @@ class PerformanceCalculator:
 
             if self.performance['audience'] > 30:
                 result += 1000 * (self.performance['audience'] - 30)
-        elif self.performance['play']['type'] == 'comedy':
+        elif self.play['type'] == 'comedy':
             result = 30000
 
             if self.performance['audience'] > 20:
@@ -31,9 +31,6 @@ class PerformanceCalculator:
 def create_statement_data(invoice, plays):
     def play_for(performance):
         return plays[performance['playID']]
-    
-    def amount_for(performance):
-        return PerformanceCalculator(performance, play_for(performance)).amount
 
     def volume_credits_for(performance):
         result = 0
@@ -55,7 +52,7 @@ def create_statement_data(invoice, plays):
 
         result = performance.copy()
         result['play'] = calculator.play
-        result['amount'] = amount_for(result)
+        result['amount'] = calculator.amount
         result['volume_credits'] = volume_credits_for(result)
         return result
 
