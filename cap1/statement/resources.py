@@ -37,6 +37,10 @@ class PerformanceCalculator:
 
         return result
 
+
+def create_performance_calculator(performance, play):
+    return PerformanceCalculator(performance, play)
+
     
 def create_statement_data(invoice, plays):
     def play_for(performance):
@@ -49,7 +53,7 @@ def create_statement_data(invoice, plays):
         return sum([item['amount'] for item in statement_data['performances']])
 
     def enrich_performance(performance):
-        calculator = PerformanceCalculator(performance, play_for(performance))
+        calculator = create_performance_calculator(performance, play_for(performance))
 
         result = performance.copy()
         result['play'] = calculator.play
