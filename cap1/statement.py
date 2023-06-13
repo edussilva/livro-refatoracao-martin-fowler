@@ -2,6 +2,10 @@ import math
 
 
 def statement(invoice, plays):
+    return render_plained_text(create_statement_data(invoice, plays))
+
+
+def create_statement_data(invoice, plays):
     def play_for(performance):
         return plays[performance['playID']]
     
@@ -52,7 +56,7 @@ def statement(invoice, plays):
     statement_data['performances'] = list(map(enrich_performance, invoice['performances']))
     statement_data['total_volume_credits'] = total_volume_credits(statement_data)
     statement_data['total_amount'] = total_amount(statement_data)
-    return render_plained_text(statement_data)
+    return statement_data
 
 
 def render_plained_text(data):
