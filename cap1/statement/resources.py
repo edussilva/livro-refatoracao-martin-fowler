@@ -43,8 +43,15 @@ class TragedyCalculator(PerformanceCalculator):
             result += 1000 * (self.performance['audience'] - 30)        
         return result
 
+
 class ComedyCalculator(PerformanceCalculator):
-    pass
+    @property
+    def amount(self):
+        result = 30000
+        if self.performance['audience'] > 20:
+            result += 10000 + 500 * (self.performance['audience'] - 20)
+        result += 300 * self.performance['audience']
+        return result
 
 
 def create_performance_calculator(performance, play):
@@ -54,8 +61,6 @@ def create_performance_calculator(performance, play):
         return ComedyCalculator(performance, play)
     
     raise Exception(f'unknown type {play["type"]}')
-    
-    return PerformanceCalculator(performance, play)
 
     
 def create_statement_data(invoice, plays):
